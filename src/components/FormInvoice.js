@@ -12,13 +12,12 @@ import axios from 'axios';
 function FormInvoice() {
 
   const [expenseItemsCount, setexpenseItemsCount] = useState([1]);
-  const [expenseItems, setexpenseItems] = useState([])
   let add_to_expense_count = ()=>{
     setexpenseItemsCount([...expenseItemsCount,1])
     
   }
 
-  let submitFormHandeler =async(e)=>{
+  let submitFormHandeler =(e)=>{
 
     e.preventDefault();
     let arr = []
@@ -30,9 +29,7 @@ function FormInvoice() {
         item_dict["expense_amt"]=expense_amt[i].value
         arr.push(item_dict)        
     }
-    await setexpenseItems(arr)
-    console.log(e.target.invoice_image.files[0]);
-    await axios.post("http://127.0.0.1:8000/invoice/",
+   axios.post("http://127.0.0.1:8000/invoice/",
     {
       invoice_title: e.target.invoice_title.value,
       receipt_image: e.target.invoice_image.files[0],
@@ -45,13 +42,44 @@ function FormInvoice() {
         "Content-Type": "multipart/form-data"
     } 
     }
+    ).then((response)=>{
+      let invoice_id = response.data.id
+      arr.map((item)=>{
 
-    )
+        axios.post("http://127.0.0.1:8000/invoice/expense_items/",
+         {
+           name: item.expense_names,
+           amount: item.expense_amt, 
+         },
+         {
+           headers:{
+               "Content-Type": "multipart/form-data"
+           } 
+           }
+         ).then(respone=>{
+           let expense_item_id = respone.data.id;
+              axios.post("http://127.0.0.1:8000/invoice/through/",
+              {          
+                  invoice: invoice_id,
+                  expense_item: expense_item_id,
+              },
+              {
+                headers:{
+                    "Content-Type": "multipart/form-data"
+                } 
+                }
+                )
+          }
+         )
+         return "hi";
+       }
+       
+       )
+    
+}
+)
+  
 
-
-    expenseItems.map ( 
-      axios.post()
-    )
   }
 
   return (
