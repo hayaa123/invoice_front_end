@@ -9,7 +9,7 @@ import Col from 'react-bootstrap/Col';
 import axios from 'axios';
 
 
-function FormInvoice() {
+function FormInvoice(props) {
 
   const [expenseItemsCount, setexpenseItemsCount] = useState([1]);
   let add_to_expense_count = ()=>{
@@ -60,7 +60,7 @@ function FormInvoice() {
            let expense_item_id = respone.data.id;
               axios.post("http://127.0.0.1:8000/invoice/through/",
               {          
-                  invoice: invoice_id,
+                  nvoice: invoice_id,
                   expense_item: expense_item_id,
               },
               {
@@ -69,9 +69,10 @@ function FormInvoice() {
                 } 
                 }
                 )
+            props.load_list()
           }
          )
-         return "hi";
+         return "";
        }
        
        )
