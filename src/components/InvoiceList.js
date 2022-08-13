@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Table ,Button} from 'react-bootstrap'
-
+import { Link } from 'react-router-dom'
 // state for Invoice list 
 
 function InvoiceList() {
@@ -44,7 +44,7 @@ function InvoiceList() {
             return(<>{
               <tr>
               <td>{item.invoice_title}</td>
-              <td><Button variant="primary">Open</Button></td>
+              <td><Link to={`/${item.id}`}><Button variant="primary" >Open</Button></Link></td>
               <td><Button variant="danger" onClick={()=>handelDelete(item.id)}>Delete</Button></td>
             </tr>
             }</>)

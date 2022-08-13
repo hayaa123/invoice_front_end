@@ -1,13 +1,20 @@
 import './App.css';
-import FormInvoice from './components/FormInvoice'
+import HomePage from './components/HomePage';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import InvoiceList from './components/InvoiceList';
-
+import {BrowserRouter as Router , Route ,Routes} from 'react-router-dom'
+import InvoiceDetail from './components/InvoiceDetail';
 function App() {
   return (
     <div>
-      <FormInvoice/>
-      <InvoiceList/>
+      <Router>
+          <Routes>
+            <Route path="/" element={<HomePage/>} />
+            <Route path="/:id" element ={<InvoiceDetail/>}/>
+          </Routes>
+
+
+      </Router>
+
     </div>
   );
 }
