@@ -4,28 +4,19 @@ import { Table ,Button} from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 // state for Invoice list 
 
-function InvoiceList() {
-  let [List_invoice, setList_invoice] = useState([1])
-  
-  let load_list =()=>{
-    axios.get("http://127.0.0.1:8000/invoice/").then((response)=>
-        {
-            // console.log()
-            setList_invoice(response.data)
-        }
-    )
-  }
+function InvoiceList(props) {
+ 
 
   let handelDelete =(id)=>{
     axios.delete(`http://127.0.0.1:8000/invoice/${id}`,{headers:{
       "Content-Type": "multipart/form-data"
   } }).then(()=>{
-      load_list()
+      props.load_list()
     })
   }
 
   useEffect(()=>{
-    load_list()
+    props.load_list()
     
   },[])
   return (
@@ -40,14 +31,16 @@ function InvoiceList() {
       </thead>
       <tbody>
       {
-          List_invoice.map(item=>{
-            return(<>{
+          props.List_invoice.map(item=>{
+            return(<>
+            {
               <tr>
-              <td>{item.invoice_title}</td>
-              <td><Link to={`/${item.id}`}><Button variant="primary" >Open</Button></Link></td>
-              <td><Button variant="danger" onClick={()=>handelDelete(item.id)}>Delete</Button></td>
-            </tr>
-            }</>)
+                <td>{item.invoice_title}</td>
+                <td><Link to={`/${item.id}`}><Button variant="primary" >Open</Button></Link></td>
+                <td><Button variant="danger" onClick={()=>handelDelete(item.id)}>Delete</Button></td>
+              </tr>
+            }
+            </>)
           })
         }
 
