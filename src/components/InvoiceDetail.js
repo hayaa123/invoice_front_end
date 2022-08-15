@@ -3,17 +3,22 @@ import React, { useEffect  } from 'react'
 import { useParams ,useNavigate  } from 'react-router-dom'
 import { useState } from 'react';
 import { Button, Table } from 'react-bootstrap';
+import fileDownload from 'js-file-download';
+
 function InvoiceDetail() {
     let {id} = useParams();
     let [invoice,setInvoice] = useState();
     let [expense_items,setExpense_items] = useState()
     let navigate = useNavigate()
 
-    let download_as_pd =()=>{
-        axios({
-            url:`http://127.0.0.1:8000/invoice/${id}/pdf/`,
+    let download_as_pd =(e)=>{
+      e.preventDefault()
+      axios({
+            url:`http://127.0.0.1:8000/invoice/pdf/${id}`,
             method: "GET",
             responseType:"blob"
+    }).then((res)=>{
+      fileDownload(res.data,"downloaded.pdf")
     })
     }
 
